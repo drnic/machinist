@@ -44,7 +44,7 @@ module Machinist
     def method_missing(symbol, *args, &block)
       if @assigned_attributes.has_key?(symbol)
         @object.send(symbol)
-      elsif @object.class.reflect_on_association(symbol) && !@object.send(symbol).nil?
+      elsif @object.class.reflect_on_association(symbol) && !@object.send(symbol).blank?
         @object.send(symbol)
       else
         @object.send("#{symbol}=", generate_attribute(symbol, args, &block))

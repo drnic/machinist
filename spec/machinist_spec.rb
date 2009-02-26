@@ -8,6 +8,7 @@ end
 
 class Post < ActiveRecord::Base
   has_many :comments
+  has_and_belongs_to_many :tags
 end
 
 class Comment < ActiveRecord::Base
@@ -15,6 +16,9 @@ class Comment < ActiveRecord::Base
   belongs_to :author, :class_name => "Person"
 end
 
+class Tag < ActiveRecord::Base
+  has_and_belongs_to_many :posts
+end
 
 describe Machinist do
   
@@ -168,6 +172,12 @@ describe Machinist do
         Post.blueprint { }
         Comment.blueprint { author }
         Comment.make.author.class.should == Person
+      end
+
+      it "should allow value to be assigned to has_and_belongs_to_many association" do
+        Tag.blueprint { }
+        Post.blueprint { tags [ Tag.make ] }
+        Post.make.tags.should have(1).instance_of(Tag)
       end
 
       describe "on a has_many association" do

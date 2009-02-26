@@ -17,4 +17,13 @@ ActiveRecord::Schema.define(:version => 0) do
     t.column :author_id, :integer
     t.column :body, :text
   end
+
+  create_table :tags, :force => true do |t|
+    t.column :name, :string
+  end
+
+  create_table :posts_tags, :force => true, :id => false do |t|
+    t.column :post_id, :integer
+    t.column :tag_id, :integer
+  end
 end
